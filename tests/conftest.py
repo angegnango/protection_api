@@ -4,11 +4,13 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
+import os
 
 
 @pytest.fixture(scope="function")
 def test_app():
     """."""
+    os.environ["ALLOW_ORIGIN"] = "datadome_module"
     with TestClient(app) as client:
         yield client
 

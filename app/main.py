@@ -4,8 +4,7 @@
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
-from app.config import get_configs
+import os
 
 
 class Signal(BaseModel):
@@ -35,11 +34,8 @@ async def homepage():
 @app.post("/check_incomming_http_traffic", status_code=status.HTTP_201_CREATED)
 async def check_http_traffic(request: Request, signals: Signal):
     """."""
-    settings = get_configs()
-    try:
-        settings.get("origin_allow", request.headers.get("X-Origin"))
-
-    except AttributeError:
+    origin_allow = os.environ.get("ALLOW_ORIGIN")
+    if origin_allow != request.headers.get("X-Origin"):
         raise HTTPException(503, detail="Incoming came from unknow host")
 
     incomming_http_signals = signals.model_dump()

@@ -5,7 +5,9 @@ from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
+import logging
 
+LOGGER = logging.getLogger(__name__)
 
 class Signal(BaseModel):
     """Class representing incoming http signal."""
@@ -39,6 +41,7 @@ async def check_http_traffic(request: Request, signals: Signal):
         raise HTTPException(503, detail="Incoming came from unknow host")
 
     incomming_http_signals = signals.model_dump()
+    LOGGER.info(f'incomming reauests {incomming_http_signals}')
 
     if (
         "bot" in incomming_http_signals["user_agent"]

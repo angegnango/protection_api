@@ -22,7 +22,7 @@ def test_verify_http_traffic(test_app, user_headers):
     """Should success and return 201 for code status."""
 
     signals = {
-        "client_host": "http://host",
+        "host": "http://host",
         "client_IP": "127.0.0.1",
         "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
     }
@@ -39,7 +39,7 @@ def test_verify_http_traffic_with_unknow_origin(test_app, user_headers):
     headers = copy.deepcopy(user_headers)
     del headers["X-Origin"]
     signals = {
-        "client_host": "http://host",
+        "host": "http://host",
         "client_IP": "127.0.0.1",
         "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
     }
@@ -55,7 +55,7 @@ def test_verify_http_traffic_with_bot_user_agent(test_app, user_headers):
     """Should failed and return 403 for code status."""
 
     signals = {
-        "client_host": "http://host",
+        "host": "http://host",
         "client_IP": "127.0.0.1",
         "user_agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
     }

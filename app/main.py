@@ -12,7 +12,7 @@ LOGGER = logging.getLogger(__name__)
 class Signal(BaseModel):
     """Class representing incoming http signal."""
 
-    client_host: str
+    host: str
     client_IP: str
     user_agent: str
 
@@ -45,7 +45,7 @@ async def check_http_traffic(request: Request, signals: Signal):
 
     if (
         "bot" in incomming_http_signals["user_agent"]
-        or incomming_http_signals["client_host"] == "http://blacklist.host"
+        or incomming_http_signals["host"] == "http://blacklist.host"
     ):
         raise HTTPException(403, detail="Bot Detected")
 

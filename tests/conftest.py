@@ -2,7 +2,8 @@
 """Pytest configuration file."""
 import pytest
 from fastapi.testclient import TestClient
-from src.main import app
+
+from app.main import app
 
 
 @pytest.fixture(scope="function")
@@ -22,4 +23,3 @@ def user_headers(test_app):
         "X-Origin": "datadome_module",
     }
     return headers
-

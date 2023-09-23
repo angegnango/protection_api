@@ -1,8 +1,8 @@
 # coding: utf-8
 """Configuration config file."""
-from pathlib import Path
-from functools import lru_cache
 import configparser
+from functools import lru_cache
+from pathlib import Path
 
 CURRENT_PATH = Path(__file__).parent.parent
 

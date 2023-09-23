@@ -1,10 +1,12 @@
 # coding: utf-8
 """Web server module."""
 
-from fastapi import FastAPI, status, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from src.config import get_configs
+
+from app.config import get_configs
+
 
 class Signal(BaseModel):
     """Class representing incoming http signal."""
@@ -24,25 +26,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 async def homepage():
     return {"message": "Welcome to Protector API"}
 
 
 @app.post("/check_incomming_http_traffic", status_code=status.HTTP_201_CREATED)
-async def check_http_traffic(request:Request, signals: Signal):
+async def check_http_traffic(request: Request, signals: Signal):
     """."""
     settings = get_configs()
     try:
-        settings.get('origin_allow', request.headers.get('X-Origin'))
-   
-    except AttributeError as _:
+        settings.get("origin_allow", request.headers.get("X-Origin"))
+
+    except AttributeError:
         raise HTTPException(503, detail="Incoming came from unknow host")
 
     incomming_http_signals = signals.model_dump()
-    
-    if 'bot' in incomming_http_signals['user_agent'] or incomming_http_signals['client_host']=='http://blacklist.host':
-        raise HTTPException(403, detail="Bot Detected")
 
+    if (
+        "bot" in incomming_http_signals["user_agent"]
+        or incomming_http_signals["client_host"] == "http://blacklist.host"
+    ):
+        raise HTTPException(403, detail="Bot Detected")
 
     return {"status": "Granted"}

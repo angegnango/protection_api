@@ -17,8 +17,11 @@ Webservice in charge of http traffic base of FastAPI , Poetry and Docker
   2 - Install dependencies using Poetry
   ` poetry install `
 
-  3 - Start the webservice
-  ` make start `
+  3 - Build docker image
+  `  docker build -t datadome/protection_api .  `
+
+  4 - Run the service
+  `  docker run -p 8000:8000 datadome/protection_api `
 
 Once thoses step done, your server will run in docker container available
 at  ' http://localhost:8000 '
@@ -42,4 +45,5 @@ Request from unknow origin
 
 ---
 
-
+---
+> To launch the all stack , cart_api, datadome_module and protector_api dont use the docker commands above. a docker compose will be use to start all service

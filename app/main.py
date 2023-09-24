@@ -9,11 +9,11 @@ import logging
 
 LOGGER = logging.getLogger(__name__)
 
+
 class Signal(BaseModel):
     """Class representing incoming http signal."""
 
     host: str
-    client_IP: str
     user_agent: str
 
 
@@ -36,12 +36,12 @@ async def homepage():
 @app.post("/check_incomming_http_traffic", status_code=status.HTTP_201_CREATED)
 async def check_http_traffic(request: Request, signals: Signal):
     """."""
-    origin_allow = os.environ.get("ALLOW_ORIGIN")
+    origin_allow = os.environ.get("ALLOW_ORIGIN", "datadome_module")
     if origin_allow != request.headers.get("X-Origin"):
         raise HTTPException(503, detail="Incoming came from unknow host")
 
     incomming_http_signals = signals.model_dump()
-    LOGGER.info(f'incomming reauests {incomming_http_signals}')
+    LOGGER.info(f"incomming reauests {incomming_http_signals}")
 
     if (
         "bot" in incomming_http_signals["user_agent"]
